@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
-import { Model } from 'mongoose';
+import { Model, mongo } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -44,8 +44,13 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    if (!mongo.ObjectId.isValid(id)) {
+      return `Invalid user ID: ${id}`;
+    }
+    return this.UserModel.findOne({
+      _id: id
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
