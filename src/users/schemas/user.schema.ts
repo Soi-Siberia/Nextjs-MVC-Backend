@@ -1,15 +1,25 @@
-// export class User { }
-import { create } from 'domain';
-import e from 'express';
-import * as mongoose from 'mongoose';
 
-export const UserSchema = new mongoose.Schema({
-    name: String,
-    account: String,
-    email: String,
-    address: String,
-    phone: Number,
-    createdAt: Date,
-    updatedAt: Date,
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
-});
+export type CatDocument = HydratedDocument<User>;
+
+@Schema()
+export class User {
+    @Prop({ required: true })
+    name: string;
+
+    @Prop({ required: true })
+    mail: string;
+
+    @Prop({ required: true })
+    password: string;
+
+    @Prop()
+    createdAt: Date;
+
+    @Prop()
+    updatedAt: Date;
+}
+
+export const UserSchema = SchemaFactory.createForClass(User);
