@@ -8,9 +8,7 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
+
 
   constructor(@InjectModel(User.name) private UserModel: Model<User>) { }
 
@@ -20,14 +18,26 @@ export class UsersService {
     return hash;
   }
 
-  async create(name: string, mail: string, password: string) {
+  async create(createUserDto: CreateUserDto) {
 
-    let hashedPassword = await this.hashPassword(password);
+    let hashedPassword = await this.hashPassword(createUserDto.password);
     let user = await this.UserModel.create({
-      name, mail, password: hashedPassword,
+      name: createUserDto.name,
+      mail: createUserDto.mail,
+      password: hashedPassword,
     })
     return user;
   }
+
+  //C1.
+  // async create(name: string, mail: string, password: string) {
+
+  //   let hashedPassword = await this.hashPassword(password);
+  //   let user = await this.UserModel.create({
+  //     name, mail, password: hashedPassword,
+  //   })
+  //   return user;
+  // }
   // return `This action adds a new user with name: ${name}, mail: ${mail}, password: ${password}`;
 
   findAll() {

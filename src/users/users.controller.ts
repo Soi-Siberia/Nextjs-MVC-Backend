@@ -8,16 +8,19 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto);
-  // }
-  create(
-    @Body("name") name: string,
-    @Body("mail") mail: string,
-    @Body("password") password: string,
-  ) {
-    return this.usersService.create(name, mail, password);
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
+
+
+  //C1
+  // create(
+  //   @Body("name") name: string,
+  //   @Body("mail") mail: string,
+  //   @Body("password") password: string,
+  // ) {
+  //   return this.usersService.create(name, mail, password);
+  // }
 
   @Get()
   findAll() {
