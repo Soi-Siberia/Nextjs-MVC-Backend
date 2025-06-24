@@ -58,7 +58,13 @@ export class UsersService {
     return this.UserModel.updateOne({ _id: updateUserDto.id }, { ...updateUserDto, updatedAt: new Date() })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    console.log(id);
+    return this.UserModel.deleteOne({ _id: id }).exec().then(result => {
+      if (result.deletedCount === 0) {
+        return `User with ID ${id} not found`;
+      }
+      return `User with ID ${id} deleted successfully`;
+    })
   }
 }
