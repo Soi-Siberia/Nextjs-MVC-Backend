@@ -41,7 +41,7 @@ export class UsersService {
   // return `This action adds a new user with name: ${name}, mail: ${mail}, password: ${password}`;
 
   findAll() {
-    return `This action returns all users`;
+    return this.UserModel.find().select('-password -__v').exec();
   }
 
   findOne(id: string) {
@@ -53,8 +53,9 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
+    return this.UserModel.updateOne({ _id: updateUserDto.id }, { ...updateUserDto, updatedAt: new Date() })
   }
 
   remove(id: number) {
