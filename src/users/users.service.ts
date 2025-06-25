@@ -18,6 +18,10 @@ export class UsersService {
     return hash;
   }
 
+  isvalidPassword = async (password: string, hashedPassword: string) => {
+    return await bcrypt.compare(password, hashedPassword);
+  }
+
   async create(createUserDto: CreateUserDto) {
 
     let hashedPassword = await this.hashPassword(createUserDto.password);
@@ -50,6 +54,12 @@ export class UsersService {
     }
     return this.UserModel.findOne({
       _id: id
+    });
+  }
+
+  findOneByUserName(username: string) {
+    return this.UserModel.findOne({
+      mail: username
     });
   }
 

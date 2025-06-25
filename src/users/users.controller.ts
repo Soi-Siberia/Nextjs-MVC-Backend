@@ -39,7 +39,7 @@ export class UsersController {
 
   @Delete('deleteById')
   remove(@Query('id') id: string) {
-    console.log("===> check ID: ", id);
+    // console.log("===> check ID: ", id);
     return this.usersService.remove(id);
   }
 }
