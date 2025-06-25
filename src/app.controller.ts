@@ -4,6 +4,7 @@ import { Controller, Get, Post, Render, Request, UseGuards } from '@nestjs/commo
 // import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -25,5 +26,11 @@ export class AppController {
   handleLogin(@Request() req) {
     // console.log("===> check req: ", req.user); // Log the user object from
     return this.authService.login(req.user); // Return the user object after successful login
+  }
+
+  @UseGuards(JwtAuthGuard) // Use JWT authentication guard for this route
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
