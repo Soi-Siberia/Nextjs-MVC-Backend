@@ -5,6 +5,7 @@ import { Controller, Get, Post, Render, Request, UseGuards } from '@nestjs/commo
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Public } from './auth/decorator/cusommize';
 
 @Controller()
 export class AppController {
@@ -21,10 +22,11 @@ export class AppController {
   //   return this.authService.login(req.user); // Return the user object after successful login
   // }
 
-  // @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
+
+  @Public()
+  @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
   @Post('/login')
   handleLogin(@Request() req) {
-    // console.log("===> check req: ", req.user); // Log the user object from
     return this.authService.login(req.user); // Return the user object after successful login
   }
 
