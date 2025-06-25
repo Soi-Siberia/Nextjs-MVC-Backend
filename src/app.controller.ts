@@ -21,14 +21,14 @@ export class AppController {
   //   return this.authService.login(req.user); // Return the user object after successful login
   // }
 
-  @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
+  // @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
   @Post('/login')
   handleLogin(@Request() req) {
     // console.log("===> check req: ", req.user); // Log the user object from
     return this.authService.login(req.user); // Return the user object after successful login
   }
 
-  @UseGuards(JwtAuthGuard) // Use JWT authentication guard for this route
+  // @UseGuards(JwtAuthGuard) // Use JWT authentication guard for this route
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
