@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { applyGlobalPlugins } from './common/plugins/mongoose.plugin';
 import { connection } from 'mongoose';
+import { CompaniesModule } from './companies/companies.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { connection } from 'mongoose';
     }),
     UsersModule,
     AuthModule,
+    CompaniesModule,
 
   ],
 
