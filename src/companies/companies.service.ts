@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Company } from './schemas/company.shema';
 
 @Injectable()
 export class CompaniesService {
-  create(createCompanyDto: CreateCompanyDto) {
-    return 'This action adds a new company';
+
+  constructor(
+    @InjectModel(Company.name) private CompanyModel: Model<Company>
+  ) { }
+
+  async create(createCompanyDto: CreateCompanyDto) {
+    const resultCreate = await this.CompanyModel.create(createCompanyDto);
+    return resultCreate;
   }
 
   findAll() {

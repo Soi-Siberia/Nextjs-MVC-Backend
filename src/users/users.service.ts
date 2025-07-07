@@ -24,7 +24,6 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-
     let hashedPassword = await this.hashPassword(createUserDto.password);
     let user = await this.UserModel.create({
       name: createUserDto.name,

@@ -1,7 +1,8 @@
+
 import { IsNotEmpty } from 'class-validator';
 
 
-export class CreateUserDto {
+export class CreateCompanyDto {
     @IsNotEmpty({ message: 'Name không được để trống' })
     name: string;
 
@@ -11,3 +12,4 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'Description không được để trống' })
     description: string;
 }
+

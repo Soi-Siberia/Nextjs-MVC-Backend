@@ -22,7 +22,7 @@ async function bootstrap() {
 
   // Set global prefix for API routes thay vì set ở AppModule
   const reflector = app.get(Reflector); // ✅ lấy Reflector từ DI container
-  // app.useGlobalGuards(new JwtAuthGuard(reflector)); // ✅ truyền đúng cách
+  app.useGlobalGuards(new JwtAuthGuard(reflector)); // ✅ truyền đúng cách
 
   // validation class pipes
   // https://docs.nestjs.com/techniques/validation#class-validator
