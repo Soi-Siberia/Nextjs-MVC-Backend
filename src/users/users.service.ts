@@ -5,12 +5,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model, mongo } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
+import { SoftDeleteModel } from 'mongoose-delete'; // Import SoftDeleteModel if you are using soft delete
 
 @Injectable()
 export class UsersService {
 
 
-  constructor(@InjectModel(User.name) private UserModel: Model<User>) { }
+  constructor(@InjectModel(User.name) private UserModel: SoftDeleteModel<User>) { }
 
   hashPassword = async (password: string) => {
     const salt = bcrypt.genSaltSync(10);
@@ -70,7 +71,7 @@ export class UsersService {
 
   remove(id: string) {
     console.log(id);
-    return this.UserModel.deleteOne({ _id: id }).exec().then(result => {
+    return this.UserModel.delete({ _id: id }).then(result => {
       if (result.deletedCount === 0) {
         return `User with ID ${id} not found`;
       }

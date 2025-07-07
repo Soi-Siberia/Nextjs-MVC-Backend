@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { applyGlobalPlugins } from './common/plugins/mongoose.plugin';
+import { connection } from 'mongoose';
 
 @Module({
   imports: [
@@ -21,6 +23,10 @@ import { AuthModule } from './auth/auth.module';
       // The `uri` property is set to the value of the `MONGO_URI`
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URI'),
+        connectionFactory: (connection) => {
+          // Apply global plugins to the Mongoose connection
+          return applyGlobalPlugins(connection);
+        }
       }),
     }),
     UsersModule,

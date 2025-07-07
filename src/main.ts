@@ -14,10 +14,15 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views')); //views
   app.setViewEngine('ejs');
 
+  //cấu hình CORS
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://yourdomain.xyz'], // Replace with your frontend URL
+    credentials: true,
+  });
 
   // Set global prefix for API routes thay vì set ở AppModule
   const reflector = app.get(Reflector); // ✅ lấy Reflector từ DI container
-  app.useGlobalGuards(new JwtAuthGuard(reflector)); // ✅ truyền đúng cách
+  // app.useGlobalGuards(new JwtAuthGuard(reflector)); // ✅ truyền đúng cách
 
   // validation class pipes
   // https://docs.nestjs.com/techniques/validation#class-validator
