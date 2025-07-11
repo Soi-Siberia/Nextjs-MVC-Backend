@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -14,6 +14,14 @@ export class CompaniesService {
   ) { }
 
   async create(createCompanyDto: CreateCompanyDto, user: IUser) {
+
+    const companyExists = await this.CompanyModel.findOne({
+      name: createCompanyDto.name,
+      deleted: false
+    });
+    if (companyExists) {
+      throw new ConflictException('Tên công ty đã tồn tại, Vui lòng kiểm tra lại')
+    }
     const resultCreate = await this.CompanyModel.create({
       ...createCompanyDto,
       createdBy: {

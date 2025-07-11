@@ -10,6 +10,12 @@ export class Company {
     name: string;
 
     @Prop()
+    phone: string;
+
+    @Prop()
+    email: string;
+
+    @Prop()
     address: string;
 
     @Prop()
