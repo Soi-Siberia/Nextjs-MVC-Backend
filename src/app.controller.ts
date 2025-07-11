@@ -5,7 +5,7 @@ import { Controller, Get, Post, Render, Request, UseGuards } from '@nestjs/commo
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { Public } from './auth/decorator/cusommize';
+import { Public } from './decorator/cusommize';
 
 @Controller()
 export class AppController {
@@ -23,16 +23,16 @@ export class AppController {
   // }
 
 
-  @Public()
-  @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
-  @Post('/login')
-  handleLogin(@Request() req) {
-    return this.authService.login(req.user); // Return the user object after successful login
-  }
+  // @Public()
+  // @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
+  // @Post('/login')
+  // handleLogin(@Request() req) {
+  //   return this.authService.login(req.user); // Return the user object after successful login
+  // }
 
-  // @UseGuards(JwtAuthGuard) // Use JWT authentication guard for this route
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
+  // // @UseGuards(JwtAuthGuard) // Use JWT authentication guard for this route
+  // @Get('profile')
+  // getProfile(@Request() req) {
+  //   return req.user;
+  // }
 }
