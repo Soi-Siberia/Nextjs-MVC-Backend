@@ -69,7 +69,7 @@ export class UsersService {
   }
 
   remove(id: string) {
-    console.log(id);
+    // console.log(id);
     return this.UserModel.delete({ _id: id }).then(result => {
       if (result.deletedCount === 0) {
         return `User with ID ${id} not found`;
