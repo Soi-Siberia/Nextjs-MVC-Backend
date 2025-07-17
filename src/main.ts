@@ -32,7 +32,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // 🔥 Gắn interceptor toàn cục
-  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
   await app.listen(configService.get('PORT') || 6969); // Use PORT from environment variables or default to 3000
 }

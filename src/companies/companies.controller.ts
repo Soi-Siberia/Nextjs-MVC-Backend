@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { User } from 'src/decorator/cusommize';
+import { ResponseMessage, User } from 'src/decorator/cusommize';
 import { IUser } from 'src/users/users.interface';
 
 
@@ -17,6 +17,7 @@ export class CompaniesController {
   }
 
   @Get()
+  @ResponseMessage("Get all companies")
   findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
     // console.log("===> check query: ", query);
     return this.companiesService.findAll(currentPage, limit, query);
