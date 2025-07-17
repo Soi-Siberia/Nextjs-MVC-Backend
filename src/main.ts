@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { TransformInterceptor } from './core/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -13,6 +14,8 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public')); //js, css, images, etc.
   app.setBaseViewsDir(join(__dirname, '..', 'views')); //views
   app.setViewEngine('ejs');
+
+
 
   //cấu hình CORS
   app.enableCors({
@@ -27,6 +30,9 @@ async function bootstrap() {
   // validation class pipes
   // https://docs.nestjs.com/techniques/validation#class-validator
   app.useGlobalPipes(new ValidationPipe());
+
+  // 🔥 Gắn interceptor toàn cục
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   await app.listen(configService.get('PORT') || 6969); // Use PORT from environment variables or default to 3000
 }
