@@ -1,6 +1,6 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type CatDocument = HydratedDocument<User>;
 
@@ -14,6 +14,43 @@ export class User {
 
     @Prop({ required: true })
     password: string;
+
+    @Prop()
+    age: string;
+
+    @Prop({ required: true })
+    gender: string;
+
+    @Prop({ type: Object })
+    company: {
+        _id: mongoose.Schema.Types.ObjectId; // ép kiểu cho _id là ObjectId của mongoose
+        name: string;
+    };
+
+    @Prop()
+    role: string;
+
+    @Prop()
+    refreshToken: string;
+
+    @Prop({ type: Object })
+    createdBy: {
+        _id: mongoose.Schema.Types.ObjectId; // ép kiểu cho _id là ObjectId của mongoose
+        name: string;
+    };
+
+    @Prop({ type: Object })
+    updatedBy: {
+        _id: mongoose.Schema.Types.ObjectId;
+        name: string;
+    };
+
+    @Prop({ type: Object })
+    deletedBy: {
+        _id: mongoose.Schema.Types.ObjectId;
+        name: string;
+    };
+
 
     @Prop()
     createdAt: Date;

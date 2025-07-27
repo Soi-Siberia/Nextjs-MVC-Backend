@@ -1,8 +1,34 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
+import { IsEmail, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CompanyUserDto } from './company-user.dto';
+import { UserRefDto } from 'src/common/dto/user-ref.dto';
 
 export class UpdateUserDto extends OmitType(CreateUserDto, ['password'] as const) {
-    // OmitType(CreateUserDto, ['password'] as const) coppy lại dto CreateUserDto nhưng không có trường password
-    // OmitType is used to create a new DTO that excludes the password field from CreateUserDto
-    id: string; // Optional field for the user ID
+
+    @IsNotEmpty()
+    id: string;
+
+    @IsNotEmpty()
+    name: string;
+
+    @IsEmail()
+    mail: string;
+
+    @IsNotEmpty()
+    age: string;
+
+    @IsNotEmpty()
+    gender: string;
+
+    @IsNotEmpty()
+    role: string;
+
+    @IsOptional()
+    updatedAt?: Date;
+
+    @ValidateNested()
+    @Type(() => UserRefDto)
+    updatedBy: UserRefDto;
 }

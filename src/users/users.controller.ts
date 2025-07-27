@@ -2,13 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from '../decorator/cusommize';
+import { Public, User } from '../decorator/cusommize';
+import { UserRefDto } from 'src/common/dto/user-ref.dto';
+import { IUser } from './users.interface';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -35,8 +36,8 @@ export class UsersController {
   }
 
   @Patch(':update')
-  update(@Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(updateUserDto);
+  update(@Body() updateUserDto: UpdateUserDto, @User() user: IUser) {
+    return this.usersService.update(updateUserDto, user);
   }
 
   @Delete('deleteById')
