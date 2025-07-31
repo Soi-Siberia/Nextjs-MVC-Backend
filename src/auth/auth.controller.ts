@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Render, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from '../decorator/cusommize';
+import { Public, ResponseMessage } from '../decorator/cusommize';
 import { LocalAuthGuard } from './local-auth.guard';
 import { registerUserDto } from '../users/dto/create-user.dto';
 
@@ -18,6 +18,7 @@ export class AuthController {
     }
 
     @Public()
+    @ResponseMessage("Register a new user")
     @Post('/register')
     async register(@Body() registerUserDto: registerUserDto) {
         return this.authService.register(registerUserDto); // Handle user registration

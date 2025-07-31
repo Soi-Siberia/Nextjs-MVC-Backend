@@ -5,19 +5,19 @@ import { UserRefDto } from 'src/common/dto/user-ref.dto';
 
 
 export class CreateUserDto {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Tên không được để trống' })
     name: string;
 
     @IsEmail()
     mail: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Tuổi không được để trống' })
     age: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Giới tính không được để trống' })
     gender: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Vai trò không được để trống' })
     role: string;
 
     @IsNotEmpty()
@@ -40,19 +40,19 @@ export class CreateUserDto {
 }
 
 export class registerUserDto {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Tên không được để trống' })
     name: string;
 
     @IsEmail()
     mail: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Tuổi không được để trống' })
     age: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Giới tính không được để trống' })
     gender: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
     password: string;
 
 }

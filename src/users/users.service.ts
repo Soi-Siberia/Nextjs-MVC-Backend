@@ -83,7 +83,7 @@ export class UsersService {
   }
 
   update(updateUserDto: UpdateUserDto, user: IUser) {
-    console.log("check user: ==> ", user);
+    // console.log("check user: ==> ", user);
     return this.UserModel.updateOne({ _id: updateUserDto.id }, { ...updateUserDto, updatedAt: new Date() })
   }
 
@@ -91,9 +91,9 @@ export class UsersService {
     // console.log(id);
     return this.UserModel.delete({ _id: id }).then(result => {
       if (result.deletedCount === 0) {
-        return `User with ID ${id} not found`;
+        return `Không tìm thấy user có ID:  ${id}`;
       }
-      return `User with ID ${id} deleted successfully`;
+      return `Xóa User Thành công`;
     })
   }
 }
