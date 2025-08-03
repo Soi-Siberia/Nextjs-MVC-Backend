@@ -2,8 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public, User } from '../decorator/cusommize';
-import { UserRefDto } from 'src/common/dto/user-ref.dto';
+import { ResponseMessage, User } from '../decorator/cusommize';
 import { IUser } from './users.interface';
 
 @Controller('users')
@@ -11,8 +10,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @ResponseMessage('Create a new user')
+  create(@Body() createUserDto: CreateUserDto, @User() user: IUser) {
+    console.log("===> User: ", user);
+    return this.usersService.create(createUserDto, user);
   }
 
 
@@ -35,14 +36,16 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Patch(':update')
+  @Patch()
+  @ResponseMessage('Update a user')
   update(@Body() updateUserDto: UpdateUserDto, @User() user: IUser) {
     return this.usersService.update(updateUserDto, user);
   }
 
-  @Delete('deleteById')
-  remove(@Query('id') id: string) {
-    // console.log("===> check ID: ", id);
-    return this.usersService.remove(id);
+  @Delete(':id')
+  @ResponseMessage('Delete a user')
+  @Get(':id')
+  remove(@Param('id') id: string, @User() user: IUser) {
+    return this.usersService.remove(id, user);
   }
 }

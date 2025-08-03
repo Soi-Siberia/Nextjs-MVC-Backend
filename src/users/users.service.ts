@@ -18,8 +18,13 @@ export class UsersService {
   //   return await bcrypt.compare(password, hashedPassword);
   // }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto, User: IUser) {
     let hashedPassword = await hashPassword(createUserDto.password);
+    // Check if the user already exists
+    const existingUser = await this.UserModel.findOne({ mail: createUserDto.mail });
+    if (existingUser) {
+      throw new BadRequestException('User already exists with this email');
+    }
     let user = await this.UserModel.create({
       name: createUserDto.name,
       mail: createUserDto.mail,
@@ -27,8 +32,16 @@ export class UsersService {
       age: createUserDto.age,
       gender: createUserDto.gender,
       role: createUserDto.role,
+      createdBy: {
+        _id: User._id,
+        mail: User.mail
+      }
     })
-    return user;
+    return {
+      id: user._id,
+      name: user.name,
+      createBy: user.createdBy,
+    };
   }
 
   async register(registerUserDto: registerUserDto) {
@@ -84,12 +97,28 @@ export class UsersService {
 
   update(updateUserDto: UpdateUserDto, user: IUser) {
     // console.log("check user: ==> ", user);
-    return this.UserModel.updateOne({ _id: updateUserDto.id }, { ...updateUserDto, updatedAt: new Date() })
+    return this.UserModel.updateOne(
+      { _id: updateUserDto.id },
+      {
+        $set: {
+          ...updateUserDto,
+          updatedAt: new Date(),
+          updatedBy: {
+            _id: user._id,
+            mail: user.mail
+          }
+        }
+      })
   }
 
-  remove(id: string) {
+  remove(id: string, user: IUser) {
     // console.log(id);
-    return this.UserModel.delete({ _id: id }).then(result => {
+    return this.UserModel.delete({ _id: id }, {
+      deletedBy: {
+        _id: user._id,
+        mail: user.mail
+      }
+    }).then(result => {
       if (result.deletedCount === 0) {
         return `Không tìm thấy user có ID:  ${id}`;
       }
