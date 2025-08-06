@@ -50,10 +50,11 @@ export class AuthService {
             mail,
             role
         };
-
+        const refresh_token = this.createRefreshToken(payload)
+        await this.usersService.updaterefreshToken(_id, refresh_token);
         return {
             access_token: this.jwtService.sign(payload),
-            refresh_token: this.createRefreshToken(payload),
+            refresh_token,
             user: {
                 _id,
                 name,

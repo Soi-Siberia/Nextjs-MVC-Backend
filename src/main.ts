@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
@@ -33,6 +33,8 @@ async function bootstrap() {
   // https://docs.nestjs.com/techniques/validation#class-validator
   app.useGlobalPipes(new ValidationPipe());
 
+  // cookie parser middleware
+  app.use(cookieParser());
 
 
   //config vesioning

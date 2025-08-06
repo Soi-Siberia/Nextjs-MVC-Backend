@@ -152,4 +152,11 @@ export class UsersService {
       return `Xóa User Thành công`;
     })
   }
+
+  updaterefreshToken = async (_id: string, refreshToken: string) => {
+    return await this.UserModel.updateOne(
+      { _id },
+      { refreshToken }
+    )
+  }
 }
