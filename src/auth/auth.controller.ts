@@ -11,6 +11,7 @@ export class AuthController {
     ) { }
 
     @Public()
+    @ResponseMessage("Login user")
     @UseGuards(LocalAuthGuard) //hasd code to be used with the local strategy
     @Post('/login')
     handleLogin(@Request() req) {

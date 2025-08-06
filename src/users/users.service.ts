@@ -7,6 +7,7 @@ import { mongo } from 'mongoose';
 import { SoftDeleteModel } from 'mongoose-delete'; // Import SoftDeleteModel if you are using soft delete
 import { IUser } from './users.interface';
 import { hashPassword } from '../common/utils/bcrypt.util'; // Import the hashPassword utility function
+import aqp from 'api-query-params';
 
 @Injectable()
 export class UsersService {
@@ -76,17 +77,43 @@ export class UsersService {
   // }
   // return `This action adds a new user with name: ${name}, mail: ${mail}, password: ${password}`;
 
-  findAll() {
-    return this.UserModel.find().select('-password -__v').exec();
+  async findAll(currentPage, limit, query) {
+    const { filter, projection, population, sort } = aqp(query);
+    delete filter.page;
+    delete filter.limit;
+
+    let offset = (+currentPage - 1) * (+limit);
+    let defaultLimit = +limit ? +limit : 10;
+
+
+    const totalItems = (await this.UserModel.find(filter)).length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const result = await this.UserModel.find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      .sort(sort as any)
+      .populate(population)
+      .select('-password -__v')
+      .exec()
+    return {
+      meta: {
+        current: currentPage, //trang hiện tại
+        pageSize: limit, //số lượng bản ghi đã lấy
+        pages: totalPages, //tổng số trang với điều kiện query
+        total: totalItems // tổng số phần tử (số bản ghi)
+      },
+      result //kết quả query
+    }
   }
 
   findOne(id: string) {
     if (!mongo.ObjectId.isValid(id)) {
-      return `Invalid user ID: ${id}`;
+      return `Invalid user`;
     }
     return this.UserModel.findOne({
       _id: id
-    });
+    }).select('-password -__v').exec()
   }
 
   findOneByUserName(username: string) {

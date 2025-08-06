@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/users/users.interface';
 import { isvalidPassword } from '../common/utils/bcrypt.util'; // Import the isvalidPassword utility function
 import { registerUserDto } from 'src/users/dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
@@ -11,7 +12,8 @@ export class AuthService {
 
     constructor(
         private usersService: UsersService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private configService: ConfigService
     ) { }
 
 
@@ -48,12 +50,26 @@ export class AuthService {
             mail,
             role
         };
+
         return {
             access_token: this.jwtService.sign(payload),
-            _id,
-            name,
-            mail,
-            role
+            refresh_token: this.createRefreshToken(payload),
+            user: {
+                _id,
+                name,
+                mail,
+                role
+            }
         };
+    }
+
+
+    createRefreshToken = (payload) => {
+        const refresh_token = this.jwtService.sign(payload, {
+            secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
+            expiresIn: this.configService.get<string>('REFRESH_TOKEN_EXPIRATION_TIME')
+        })
+
+        return refresh_token;
     }
 }

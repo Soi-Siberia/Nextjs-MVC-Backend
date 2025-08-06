@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ResponseMessage, User } from '../decorator/cusommize';
+import { Public, ResponseMessage, User } from '../decorator/cusommize';
 import { IUser } from './users.interface';
 
 @Controller('users')
@@ -26,12 +26,22 @@ export class UsersController {
   //   return this.usersService.create(name, mail, password);
   // }
 
-  @Get(':all')
-  findAll() {
-    return this.usersService.findAll();
+  // @Get(':all')
+  // findAll() {
+  //   return this.usersService.findAll();
+  // }
+
+  @Get()
+  @ResponseMessage('Get all users')
+  @Public()
+  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+    return this.usersService.findAll(currentPage, limit, query);
   }
 
+
   @Get(':id')
+  @Public()
+  @ResponseMessage('Get a user by ID')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
