@@ -18,8 +18,14 @@ async function bootstrap() {
 
 
   //cấu hình CORS
+  // app.enableCors({
+  //   origin: ['http://localhost:3000', 'https://yourdomain.xyz'], // Replace with your frontend URL
+  //   credentials: true,
+  // });
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://yourdomain.xyz'], // Replace with your frontend URL
+    origin: true, // Replace with your frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    "preflightContinue": false,
     credentials: true,
   });
 

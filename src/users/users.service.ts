@@ -153,10 +153,16 @@ export class UsersService {
     })
   }
 
-  updaterefreshToken = async (_id: string, refreshToken: string) => {
+  updateUserToken = async (_id: string, refreshToken: string) => {
     return await this.UserModel.updateOne(
       { _id },
       { refreshToken }
     )
+  }
+
+  findByRefreshToken = async (refreshToken: string) => {
+    return await this.UserModel.findOne({ refreshToken })
+      .select('_id name mail role') // chỉ lấy những field này
+      .exec();
   }
 }
