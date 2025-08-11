@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -64,8 +64,16 @@ export class CompaniesService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+  findOne(id: string) {
+    return this.CompanyModel.findById(id).then(company => {
+      if (!company) {
+        throw new BadRequestException('Job not found');
+      }
+      return company;
+    }
+    ).catch(err => {
+      throw new BadRequestException(`Job not found`);
+    })
   }
 
   async update(id: string, updateCompanyDto: UpdateCompanyDto, user: IUser) {
