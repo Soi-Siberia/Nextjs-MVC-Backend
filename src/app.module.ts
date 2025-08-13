@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { applyGlobalPlugins } from './common/plugins/mongoose.plugin';
 import { CompaniesModule } from './companies/companies.module';
 import { JobsModule } from './jobs/jobs.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { JobsModule } from './jobs/jobs.module';
     AuthModule,
     CompaniesModule,
     JobsModule,
+    ImagesModule,
 
   ],
 
