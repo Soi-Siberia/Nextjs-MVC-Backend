@@ -9,6 +9,7 @@ import { applyGlobalPlugins } from './common/plugins/mongoose.plugin';
 import { CompaniesModule } from './companies/companies.module';
 import { JobsModule } from './jobs/jobs.module';
 import { ImagesModule } from './images/images.module';
+import { ResumesModule } from './resumes/resumes.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ImagesModule } from './images/images.module';
     CompaniesModule,
     JobsModule,
     ImagesModule,
+    ResumesModule,
 
   ],
 

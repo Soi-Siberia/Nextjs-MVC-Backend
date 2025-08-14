@@ -6,6 +6,7 @@ import { SoftDeleteModel } from 'mongoose-delete'; // Import SoftDeleteModel if 
 import { Company } from './schemas/company.shema';
 import { IUser } from 'src/users/users.interface';
 import aqp from 'api-query-params';
+import mongoose, { mongo } from 'mongoose';
 
 @Injectable()
 export class CompaniesService {
@@ -65,6 +66,11 @@ export class CompaniesService {
   }
 
   findOne(id: string) {
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid company ID format');
+    }
+
     return this.CompanyModel.findById(id).then(company => {
       if (!company) {
         throw new BadRequestException('Job not found');
