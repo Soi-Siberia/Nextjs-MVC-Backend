@@ -10,6 +10,10 @@ export class CreateCompanyDto {
     @IsNumberString({}, { message: 'Phone phải là một chuỗi số' })
     phone: string;
 
+    @IsNotEmpty({ message: 'Logo không được để trống' })
+    logo: string;
+
+
     @IsNotEmpty({ message: 'Email không được để trống' })
     email: string;
 

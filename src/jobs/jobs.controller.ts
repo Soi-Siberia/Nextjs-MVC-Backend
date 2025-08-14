@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
-import { ResponseMessage, User } from 'src/decorator/cusommize';
+import { Public, ResponseMessage, User } from 'src/decorator/cusommize';
 import { UserRefDto } from 'src/common/dto/user-ref.dto';
 import { IUser } from 'src/users/users.interface';
 
@@ -18,11 +18,13 @@ export class JobsController {
   }
 
   @Get()
+  @Public()
   findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
     return this.jobsService.findAll(currentPage, limit, query);
   }
 
   @Get(':id')
+  @Public()
   @ResponseMessage('Get a job by ID')
   findOne(@Param('id') id: string) {
     return this.jobsService.findOne(id);
