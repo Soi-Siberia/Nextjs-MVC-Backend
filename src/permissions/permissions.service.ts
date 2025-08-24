@@ -126,10 +126,10 @@ export class PermissionsService {
       );
 
       if (!result) {
-        return { status: 'error', message: 'Không tìm thấy công việc để xóa' };
+        throw new BadRequestException("Không thể xóa job");
       }
 
-      return { status: 'success', message: 'Xóa công việc thành công', data: result };
+      return result;
     } catch (e) {
       throw new BadRequestException(`Error deleting job: ${e.message}`);
     }

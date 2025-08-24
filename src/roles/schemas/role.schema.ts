@@ -13,9 +13,9 @@ export class Role {
     @Prop()
     isActive: boolean
 
-    @Prop()
-    Permissions: [
-        _id: mongoose.Schema.Types.ObjectId // ép kiểu cho _id là ObjectId của mongoose
+    @Prop([{ type: mongoose.Types.ObjectId }])
+    permissions: [
+        _id: mongoose.Schema.Types.ObjectId[] // ép kiểu cho _id là ObjectId của mongoose
     ] //thuộc modules nào ?
 
     @Prop()
