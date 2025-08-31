@@ -75,7 +75,11 @@ export class RolesService {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException("ID không hợp lệ")
     }
-    return this.rolesModule.findById(id).then(result => {
+
+    return this.rolesModule.findById(id).populate({
+      path: "permissions",
+      select: { _id: 1, apiPath: 1, name: 1, method: 1, module: 1 }
+    }).then(result => {
       if (!result) {
         throw new NotFoundException("Không tìm thấy role")
       }
@@ -86,22 +90,23 @@ export class RolesService {
     });
   }
 
+
   async update(id: string, updateRoleDto: UpdateRoleDto, user: IUser) {
     console.log("===> check update data: ", updateRoleDto)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException("id không đúng định dạng")
     }
 
-    if (updateRoleDto.name) {
-      const exists = await this.rolesModule.findOne({
-        name: updateRoleDto.name,
-        _id: { $ne: id }
-      })
+    // if (updateRoleDto.name) {
+    //   const exists = await this.rolesModule.findOne({
+    //     name: updateRoleDto.name,
+    //     _id: { $ne: id }
+    //   })
 
-      if (exists) {
-        throw new BadRequestException("Name Role đã tồn lại")
-      }
-    }
+    //   if (exists) {
+    //     throw new BadRequestException("Name Role đã tồn lại")
+    //   }
+    // }
 
     const updateRole = await this.rolesModule.updateOne(
       {
@@ -129,6 +134,13 @@ export class RolesService {
 
 
   async remove(id: string, user: IUser) {
+
+
+    const roleDelte = await this.rolesModule.findById(id)
+    if (roleDelte.name === "ADMIN") {
+      throw new BadRequestException("Không thể xóa Role Admin")
+    }
+
     // Bước 1: Cập nhật deletedBy
     await this.rolesModule.updateOne(
       { _id: id, deleted: false },

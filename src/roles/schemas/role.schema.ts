@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose from "mongoose"
+import { Permission } from "src/permissions/schemas/permission.schema"
 
 @Schema({ timestamps: true })
 export class Role {
@@ -13,7 +14,8 @@ export class Role {
     @Prop()
     isActive: boolean
 
-    @Prop([{ type: mongoose.Types.ObjectId }])
+    // @Prop([{ type: mongoose.Types.ObjectId, ref: Permission.name }])
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Permission.name }] })
     permissions: [
         _id: mongoose.Schema.Types.ObjectId[] // ép kiểu cho _id là ObjectId của mongoose
     ] //thuộc modules nào ?

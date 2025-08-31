@@ -1,4 +1,4 @@
-import { IsEmail, isNotEmpty, IsNotEmpty, ValidateNested } from 'class-validator';
+import { IsEmail, IsMongoId, isNotEmpty, IsNotEmpty, ValidateNested } from 'class-validator';
 import { CompanyUserDto } from './company-user.dto';
 import { Type } from 'class-transformer';
 import { UserRefDto } from 'src/common/dto/user-ref.dto';
@@ -18,6 +18,7 @@ export class CreateUserDto {
     gender: string;
 
     @IsNotEmpty({ message: 'Vai trò không được để trống' })
+    @IsMongoId({ message: 'Định dạnh role ID mongo' })
     role: string;
 
     @IsNotEmpty()

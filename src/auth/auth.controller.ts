@@ -25,7 +25,8 @@ export class AuthController {
     @ResponseMessage("Get user profile")
     @Get('/account')
     handleAccount(@User() user: IUser) {
-        return user; // Return the user object from the request
+        const userdata = { user }
+        return userdata; // Return the user object from the request
     }
 
     @Public()

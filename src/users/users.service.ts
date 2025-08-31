@@ -8,6 +8,7 @@ import { SoftDeleteModel } from 'mongoose-delete'; // Import SoftDeleteModel if 
 import { IUser } from './users.interface';
 import { hashPassword } from '../common/utils/bcrypt.util'; // Import the hashPassword utility function
 import aqp from 'api-query-params';
+import path from 'path';
 
 @Injectable()
 export class UsersService {
@@ -111,15 +112,26 @@ export class UsersService {
     if (!mongo.ObjectId.isValid(id)) {
       return `Invalid user`;
     }
+
     return this.UserModel.findOne({
       _id: id
-    }).select('-password -__v').exec()
+    })
+      .select('-password -__v')
+      .populate({
+        path: "role",
+        select: { name: 1, _id: 1 }
+      })
+      .exec()
   }
 
   findOneByUserName(username: string) {
     return this.UserModel.findOne({
       mail: username
-    });
+    })
+      .populate({
+        path: "role",
+        select: { name: 1, permissions: 1 }
+      })
   }
 
   update(updateUserDto: UpdateUserDto, user: IUser) {
@@ -138,8 +150,12 @@ export class UsersService {
       })
   }
 
-  remove(id: string, user: IUser) {
-    // console.log(id);
+  async remove(id: string, user: IUser) {
+    console.log(id);
+    const checkuser = await this.UserModel.findById(id)
+    if (checkuser.mail === "admin@gmail.com") {
+      throw new BadRequestException("Bạn ko có quyển delete user này! Vui lòng kiểm tra lại")
+    }
     return this.UserModel.delete({ _id: id }, {
       deletedBy: {
         _id: user._id,

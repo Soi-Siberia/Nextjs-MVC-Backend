@@ -7,6 +7,7 @@ import { Resume } from './schemas/resume.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import aqp from 'api-query-params';
 import mongoose from 'mongoose';
+import path from 'path';
 
 @Injectable()
 export class ResumesService {
@@ -137,7 +138,23 @@ export class ResumesService {
 
   byUser(user: IUser) {
 
-    return this.ResumeModel.find({ userId: user._id, deleted: false })
+    return this.ResumeModel.find(
+      {
+        userId: user._id,
+        deleted: false
+      }
+    )
+      .sort("-createdBy")
+      .populate([
+        {
+          path: "companyId",
+          select: { name: 1 }
+        },
+        {
+          path: "jobId",
+          select: { name: 1 }
+        }
+      ])
   }
 
 }
