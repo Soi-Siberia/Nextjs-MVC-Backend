@@ -20,7 +20,7 @@ export class JobsService {
     // For demonstration, we will just return the job data along with the user information
     const newJob = await this.jobModel.create({
       name: createJobDto.name,
-      skill: createJobDto.skill,
+      skills: createJobDto.skills,
       company: {
         _id: createJobDto.company._id, // ép kiểu cho _id là ObjectId của mongoose
         name: createJobDto.company.name
@@ -29,8 +29,8 @@ export class JobsService {
       quantity: createJobDto.quantity, //số lượng tuyển
       level: createJobDto.level,
       description: createJobDto.description,
-      stratDate: createJobDto.stratDate,
-      eddDate: createJobDto.eddDate,
+      startDate: createJobDto.startDate,
+      endDate: createJobDto.endDate,
       isActive: true, // mặc định là true
       createdBy: {
         _id: user._id, // ép kiểu cho _id là ObjectId của mongoose
@@ -47,8 +47,8 @@ export class JobsService {
 
   async findAll(currentPage: number, limit: number, query: any) {
     const { filter, projection, population, sort } = aqp(query);
-    delete filter.page;
-    delete filter.limit;
+    delete filter.current;
+    delete filter.pageSize;
 
     let offset = (+currentPage - 1) * (+limit);
     let defaultLimit = +limit ? +limit : 10;

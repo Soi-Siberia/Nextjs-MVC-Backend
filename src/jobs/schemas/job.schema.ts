@@ -10,7 +10,7 @@ export class Job {
     name: string;
 
     @Prop()
-    skill: string[];
+    skills: string[];
 
     @Prop({ type: Object })
     company: {
@@ -34,10 +34,10 @@ export class Job {
     description: string;
 
     @Prop()
-    stratDate: Date;
+    startDate: Date;
 
     @Prop()
-    eddDate: Date;
+    endDate: Date;
 
     @Prop()
     isActive: boolean;

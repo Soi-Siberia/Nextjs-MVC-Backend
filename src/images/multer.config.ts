@@ -65,7 +65,7 @@ export class MulterConfigService implements MulterOptionsFactory {
             // Bộ lọc loại file
             fileFilter: (req, file, cb) => {
                 // Chỉ cho phép ảnh JPG, JPEG, PNG
-                if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+                if (!file.mimetype.match(/\/(jpg|jpeg|png|pdf)$/)) {
                     return cb(new Error('Chỉ cho phép file JPG, JPEG, PNG!'), false);
                 }
                 cb(null, true);

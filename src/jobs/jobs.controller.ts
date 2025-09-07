@@ -14,12 +14,13 @@ export class JobsController {
   @Post()
   @ResponseMessage('Create new Job') // Custom response message
   create(@Body() createJobDto: CreateJobDto, @User() user: UserRefDto) {
+    console.log('createJobDto ==> ', createJobDto);
     return this.jobsService.create(createJobDto, user);
   }
 
   @Get()
   @Public()
-  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+  findAll(@Query('current') currentPage: number, @Query('pageSize') limit: number, @Query() query: any) {
     return this.jobsService.findAll(currentPage, limit, query);
   }
 

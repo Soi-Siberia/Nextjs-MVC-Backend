@@ -6,16 +6,16 @@ export class CreateCompanyDto {
     @IsNotEmpty({ message: 'Name không được để trống' })
     name: string;
 
-    @IsNotEmpty({ message: 'Phone không được để trống' })
-    @IsNumberString({}, { message: 'Phone phải là một chuỗi số' })
-    phone: string;
+    // @IsNotEmpty({ message: 'Phone không được để trống' })
+    // @IsNumberString({}, { message: 'Phone phải là một chuỗi số' })
+    // phone: string;
 
     @IsNotEmpty({ message: 'Logo không được để trống' })
     logo: string;
 
 
-    @IsNotEmpty({ message: 'Email không được để trống' })
-    email: string;
+    // @IsNotEmpty({ message: 'Email không được để trống' })
+    // email: string;
 
     @IsNotEmpty({ message: 'Address không được để trống' })
     address: string;

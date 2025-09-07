@@ -6,6 +6,7 @@ import { isvalidPassword } from '../common/utils/bcrypt.util'; // Import the isv
 import { registerUserDto } from 'src/users/dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { RolesService } from 'src/roles/roles.service';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class AuthService {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private rolesService: RolesService,
     ) { }
 
 
@@ -33,8 +35,17 @@ export class AuthService {
         if (user) {
             const isValid = await isvalidPassword(pass, user.password)
             if (isValid) {
-                // const { password, ...result } = user.toObject();
-                return user;
+                // If needed, you can fetch and attach the user's role details here
+                // For example:
+                // const roleUser = user.role as unknown as { _id: string, name: string };
+                const teamp = await this.rolesService.findOne(user.role._id);
+                const objUser = {
+                    ...user.toObject(),
+                    permissions: teamp?.permissions || []
+                }
+                delete objUser.password; // Remove password before returning user object
+
+                return objUser;
             }
         }
         return null;
@@ -42,14 +53,14 @@ export class AuthService {
 
     // Generate JWT token for the user
     async login(user: IUser, response: Response) {
-        const { _id, name, mail, role } = user;
+        const { _id, name, mail, role, permissions } = user;
         const payload = {
             sub: "Token Login",
             iss: "from server",
             _id,
             name,
             mail,
-            role
+            role,
         };
         const refresh_token = this.createRefreshToken(payload)
         await this.usersService.updateUserToken(_id, refresh_token);
@@ -67,7 +78,8 @@ export class AuthService {
                 _id,
                 name,
                 mail,
-                role
+                role,
+                permissions
             }
         };
     }
@@ -95,18 +107,15 @@ export class AuthService {
 
             // Check if the user exists and has a matching refresh token
             const user = await this.usersService.findByRefreshToken(refreshToken)
-            console.log('check user 1 ==> : ', user);
-            console.log('----------------------------------');
-
             if (user) {
-                const { _id, name, mail, role } = user;
+                const { _id, name, mail, role, permissions } = user;
                 const payload = {
                     sub: "Token Refresh",
                     iss: "from server",
                     _id,
                     name,
                     mail,
-                    role
+                    role,
                 };
                 const refresh_token = this.createRefreshToken(payload)
                 await this.usersService.updateUserToken(_id, refresh_token);
@@ -124,7 +133,8 @@ export class AuthService {
                         _id,
                         name,
                         mail,
-                        role
+                        role,
+                        permissions
                     }
                 };
 

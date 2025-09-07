@@ -8,19 +8,29 @@ import { SoftDeleteModel } from 'mongoose-delete'; // Import SoftDeleteModel if 
 import { IUser } from './users.interface';
 import { hashPassword } from '../common/utils/bcrypt.util'; // Import the hashPassword utility function
 import aqp from 'api-query-params';
-import path from 'path';
+import { USER_ROLE } from 'src/databases/sample';
+import { Role, RoleSchema } from 'src/roles/schemas/role.schema';
+
 
 @Injectable()
 export class UsersService {
 
 
-  constructor(@InjectModel(User.name) private UserModel: SoftDeleteModel<User>) { }
+  constructor(
+    @InjectModel(User.name) private UserModel: SoftDeleteModel<User>,
+
+    @InjectModel(Role.name) private RoleModel: SoftDeleteModel<Role>,
+
+  ) { }
 
   // isvalidPassword = async (password: string, hashedPassword: string) => {
   //   return await bcrypt.compare(password, hashedPassword);
   // }
 
   async create(createUserDto: CreateUserDto, User: IUser) {
+
+    const userRole = await this.RoleModel.findOne({ name: USER_ROLE });
+
     let hashedPassword = await hashPassword(createUserDto.password);
     // Check if the user already exists
     const existingUser = await this.UserModel.findOne({ mail: createUserDto.mail });
@@ -33,7 +43,7 @@ export class UsersService {
       password: hashedPassword,
       age: createUserDto.age,
       gender: createUserDto.gender,
-      role: createUserDto.role,
+      role: userRole?._id, // Default role if not provided
       createdBy: {
         _id: User._id,
         mail: User.mail
@@ -53,6 +63,11 @@ export class UsersService {
       throw new BadRequestException('User already exists with this email');
     }
 
+    const userRole = await this.RoleModel.findOne({ name: USER_ROLE });
+    if (!userRole) {
+      throw new BadRequestException('Đã phát sinh lỗi: Lỗi không tìm thấy role USER_ROLE');
+    }
+
     // Create a new user
     let hashedPassword = await hashPassword(registerUserDto.password);
     const newUser = await this.UserModel.create({
@@ -61,7 +76,7 @@ export class UsersService {
       password: hashedPassword,
       age: registerUserDto.age,
       gender: registerUserDto.gender,
-      role: 'USER', // Default role if not provided
+      role: userRole?._id, // Default role if not provided
       createdAt: new Date(),
     })
     return newUser; // Return the newly created user
@@ -80,8 +95,8 @@ export class UsersService {
 
   async findAll(currentPage, limit, query) {
     const { filter, projection, population, sort } = aqp(query);
-    delete filter.page;
-    delete filter.limit;
+    delete filter.current;
+    delete filter.pageSize;
 
     let offset = (+currentPage - 1) * (+limit);
     let defaultLimit = +limit ? +limit : 10;
@@ -130,7 +145,7 @@ export class UsersService {
     })
       .populate({
         path: "role",
-        select: { name: 1, permissions: 1 }
+        select: { name: 1 }
       })
   }
 
@@ -178,7 +193,9 @@ export class UsersService {
 
   findByRefreshToken = async (refreshToken: string) => {
     return await this.UserModel.findOne({ refreshToken })
-      .select('_id name mail role') // chỉ lấy những field này
-      .exec();
+      .populate({
+        path: "role",
+        select: { name: 1 }
+      })
   }
 }

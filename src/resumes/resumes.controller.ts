@@ -25,7 +25,7 @@ export class ResumesController {
 
   @Get()
   @ResponseMessage('Fetch all resumes with paginate')
-  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+  findAll(@Query('current') currentPage: number, @Query('pageSize') limit: number, @Query() query: any) {
     return this.resumesService.findAll(currentPage, limit, query);
   }
 

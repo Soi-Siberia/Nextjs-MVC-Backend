@@ -7,7 +7,7 @@ export class CreateJobDto {
     name: string;
 
     @IsNotEmpty({ message: 'Kỹ năng không được để trống' })
-    skill: string[];
+    skills: string[];
 
     @IsNotEmpty({ message: 'Mức lương không được để trống' })
     salary: number;
@@ -22,10 +22,10 @@ export class CreateJobDto {
     description: string;
 
     @IsNotEmpty({ message: 'Ngày bắt bắt đầu đăng tuyển không được để trống' })
-    stratDate: Date;
+    startDate: Date;
 
     @IsNotEmpty({ message: 'Ngày kết thúc đăng tuyển không được để trống' })
-    eddDate: Date;
+    endDate: Date;
 
     @ValidateNested()
     @Type(() => UserRefDto)

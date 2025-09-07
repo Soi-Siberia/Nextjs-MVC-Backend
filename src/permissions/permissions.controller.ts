@@ -17,7 +17,8 @@ export class PermissionsController {
 
   @Get()
   @ResponseMessage('Fetch permissions with paginate')
-  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+  findAll(@Query('current') currentPage: number, @Query('pageSize') limit: number, @Query() query: any) {
+    // console.log(currentPage, limit, query);
     return this.permissionsService.findAll(currentPage, limit, query);
   }
 

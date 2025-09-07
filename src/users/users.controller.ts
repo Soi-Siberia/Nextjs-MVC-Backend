@@ -12,7 +12,7 @@ export class UsersController {
   @Post()
   @ResponseMessage('Create a new user')
   create(@Body() createUserDto: CreateUserDto, @User() user: IUser) {
-    console.log("===> User: ", user);
+    // console.log("===> User: ", user);
     return this.usersService.create(createUserDto, user);
   }
 
@@ -34,7 +34,7 @@ export class UsersController {
   @Get()
   @ResponseMessage('Get all users')
   @Public()
-  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+  findAll(@Query('current') currentPage: number, @Query('pageSize') limit: number, @Query() query: any) {
     return this.usersService.findAll(currentPage, limit, query);
   }
 

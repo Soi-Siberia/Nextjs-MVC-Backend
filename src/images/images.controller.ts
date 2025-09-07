@@ -5,13 +5,13 @@ import { UpdateImageDto } from './dto/update-image.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Public } from 'src/decorator/cusommize';
 
-@Controller('images')
+@Controller('files')
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) { }
 
   @Post('upload')
   @Public()
-  @UseInterceptors(FileInterceptor('folderType'))
+  @UseInterceptors(FileInterceptor('fileUpload'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     return {
       message: 'File uploaded successfully',

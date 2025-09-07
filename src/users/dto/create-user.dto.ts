@@ -17,9 +17,9 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'Giới tính không được để trống' })
     gender: string;
 
-    @IsNotEmpty({ message: 'Vai trò không được để trống' })
-    @IsMongoId({ message: 'Định dạnh role ID mongo' })
-    role: string;
+    // @IsNotEmpty({ message: 'Vai trò không được để trống' })
+    // @IsMongoId({ message: 'Định dạnh role ID mongo' })
+    // role: string;
 
     @IsNotEmpty()
     password: string;
@@ -44,7 +44,7 @@ export class registerUserDto {
     @IsNotEmpty({ message: 'Tên không được để trống' })
     name: string;
 
-    @IsEmail()
+    @IsEmail({}, { message: 'Email không đúng định dạng' })
     mail: string;
 
     @IsNotEmpty({ message: 'Tuổi không được để trống' })

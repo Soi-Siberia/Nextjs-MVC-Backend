@@ -7,6 +7,7 @@ import { Role } from './schemas/role.schema'; // Adjust the import path as neces
 import { IUser } from 'src/users/users.interface';
 import mongoose from 'mongoose';
 import aqp from 'api-query-params';
+import { ADMIN_ROLE } from 'src/databases/sample';
 
 @Injectable()
 
@@ -43,8 +44,8 @@ export class RolesService {
 
   async findAll(currentPage: number, limit: number, query: any) {
     const { filter, projection, population, sort } = aqp(query);
-    delete filter.page;
-    delete filter.limit;
+    delete filter.current;
+    delete filter.pageSize;
 
     let offset = (+currentPage - 1) * (+limit);
     let defaultLimit = +limit ? +limit : 10;
@@ -137,7 +138,7 @@ export class RolesService {
 
 
     const roleDelte = await this.rolesModule.findById(id)
-    if (roleDelte.name === "ADMIN") {
+    if (roleDelte.name === ADMIN_ROLE) {
       throw new BadRequestException("Không thể xóa Role Admin")
     }
 

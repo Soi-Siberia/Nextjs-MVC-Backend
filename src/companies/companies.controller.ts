@@ -19,7 +19,7 @@ export class CompaniesController {
   @Get()
   @Public()
   @ResponseMessage("Get all companies")
-  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+  findAll(@Query('current') currentPage: number, @Query('pageSize') limit: number, @Query() query: any) {
     // console.log("===> check query: ", query);
     return this.companiesService.findAll(currentPage, limit, query);
   }

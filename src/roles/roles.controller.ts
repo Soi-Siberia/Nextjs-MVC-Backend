@@ -17,7 +17,7 @@ export class RolesController {
 
   @Get()
   @ResponseMessage('Fetch Role with paginate')
-  findAll(@Query('page') currentPage: number, @Query('limit') limit: number, @Query() query: any) {
+  findAll(@Query('current') currentPage: number, @Query('pageSize') limit: number, @Query() query: any) {
     return this.rolesService.findAll(currentPage, limit, query);
   }
 
