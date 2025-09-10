@@ -93,7 +93,7 @@ export class RolesService {
 
 
   async update(id: string, updateRoleDto: UpdateRoleDto, user: IUser) {
-    console.log("===> check update data: ", updateRoleDto)
+    // console.log("===> check update data: ", updateRoleDto)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException("id không đúng định dạng")
     }

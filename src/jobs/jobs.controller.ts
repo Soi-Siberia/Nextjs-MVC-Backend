@@ -14,7 +14,6 @@ export class JobsController {
   @Post()
   @ResponseMessage('Create new Job') // Custom response message
   create(@Body() createJobDto: CreateJobDto, @User() user: UserRefDto) {
-    console.log('createJobDto ==> ', createJobDto);
     return this.jobsService.create(createJobDto, user);
   }
 
